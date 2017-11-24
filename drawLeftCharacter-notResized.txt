@@ -1,0 +1,134 @@
+drawLeftCharacter macro row,column
+        pusha
+        ;===Character===
+        
+        ;tophair
+        mov ax,row
+        mov bx,column
+        drawRectangle ax,bx,4,25,08h
+        
+        ;backhair
+        
+        
+        add ax,4
+        drawRectangle ax,bx,4,5,08h 
+        
+        ;topface
+        
+        add bx,4
+        drawRectangle ax,bx,10,20,0eh
+        
+        ;buttomface
+        
+        
+        add ax,10
+        add bx,2
+        drawRectangle ax,bx,5,17,0eh  
+        
+        ;mouth
+        
+        
+        add ax,1
+        add bx,4
+        drawRectangle ax,bx,3,9,00h    
+        
+        ;left eye
+        
+        
+        sub ax,9
+        sub bx,2
+        drawRectangle ax,bx,4,5,00h  
+        
+        ;right eye
+        
+        add bx,11
+        drawRectangle ax,bx,4,4,00h  
+        
+        ;clothes
+        
+        
+        add ax,14
+        sub bx,18
+        drawRectangle ax,bx,25,25,02h
+        
+        ;left hand
+        
+        
+        add ax,9
+        drawRectangle ax,bx,4,15,0eh
+        
+        ;left leg
+        
+        
+        add ax,16
+        add bx,5
+        drawRectangle ax,bx,12,5,0eh
+        
+        ;rightleg
+       
+        add bx,10
+        drawRectangle ax,bx,12,5,0eh
+        
+        ;===Bow===
+        
+        ;top
+        
+        
+        sub ax,15
+        add bx,1 
+        drawRectangle ax,bx,3,3,06h   
+        
+        
+        sub ax,3
+        add bx,3                                    
+        drawRectangle ax,bx,3,3,06h                                                                              
+        
+        
+        sub ax,3
+        add bx,3
+        drawRectangle ax,bx,3,3,06h                                                                              
+        
+        
+        sub ax,3
+        add bx,3                                                                                            
+        drawRectangle ax,bx,3,3,06h
+        
+        ;buttom
+        
+                                                                                      
+        add ax,9
+        sub bx,6
+        drawRectangle ax,bx,3,3,06h                                                                              
+        
+        
+        add ax,3
+        add bx,3
+        drawRectangle ax,bx,3,3,06h                                                                              
+        
+        
+        add ax,3
+        add bx,3
+        drawRectangle ax,bx,3,3,06h                                                                              
+        
+        
+        add ax,3
+        add bx,3
+        drawRectangle ax,bx,3,3,06h
+        
+        ;endpart
+        
+        
+        sub ax,19
+        drawRectangle ax,bx,7,3,06h                                                                                         
+        
+        add ax,7
+        add bx,2
+        drawRectangle ax,bx,7,3,06h                                                                                         
+        
+        
+        add ax,7
+        sub bx,2
+        drawRectangle ax,bx,7,3,06h                                                                                         
+        
+       popa
+       ENDM drawLeftCharacter 

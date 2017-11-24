@@ -1,0 +1,10 @@
+column1 EQU 20
+row1    EQU 18
+column2 EQU 200
+row2    EQU 18
+health1 EQU 100
+health2 EQU 75
+heart1row EQU  2
+heart1column EQU 1
+heart2row EQU  2
+heart2column EQU 23
