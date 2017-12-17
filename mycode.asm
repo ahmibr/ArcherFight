@@ -1,6 +1,6 @@
 include graphics.inc     ;graphics and animation
 include math.inc         ;fill the array of points
-include welcomescreen.inc  ;welcome screen module
+include welcome.inc  ;welcome screen module
      
         .MODEL SMALL
         .STACK 64
