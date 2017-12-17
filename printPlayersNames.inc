@@ -9,7 +9,7 @@ printFirstPlayerName MACRO row,column,name
         mov  ah, 02h  ;SetCursorPosition
         int  10h
         
-        ;Draw Name
+        ;print Name
         mov ah,9h
         mov dx,offset name
         int 21h
@@ -28,7 +28,7 @@ printSecondPlayerName MACRO row,column,name
         mov  ah, 02h  ;SetCursorPosition
         int  10h
         
-        ;Draw Name
+        ;print Name
         mov ah,9h
         mov dx,offset name
         int 21h

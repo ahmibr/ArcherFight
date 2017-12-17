@@ -1,0 +1,141 @@
+
+drawLeftPlayerArrow Macro row,column,color
+        local top,ibot,bot,mid
+        pusha
+        
+        ;=====Back up=====
+        mov di,row
+        mov si,column
+        
+        ;=====Initialization======
+        mov cx,si
+        mov dx,di
+
+        mov bl,3 ;size of head
+        mov bh,2 ;Counter, draw front and back
+        mov ah,0ch   ;draw pixel command
+        mov al,color ;set Color
+        
+        
+        
+        ;======Draw Top part=======
+        top:
+        int 10h
+        dec cx
+        dec dx
+        dec bl
+        jnz top
+        
+        ;draw the top part again, but in the back
+        mov cx,si  
+        mov dx,di
+        mov bl,3
+        dec bh
+        jz ibot
+        
+        sub cx,9 ;Length of Arrow
+        jmp top
+        
+        
+        ;=====Draw Bot=========
+        ibot:
+        mov bh,2
+        bot: 
+        
+        int 10h
+        dec cx
+        inc dx
+        dec bl
+        jnz bot
+        
+        ;draw the bottom part again, but in the back
+        mov cx,si
+        mov dx,di
+        dec bh
+        jz mid
+        mov bl,3
+        sub cx,9  ;Length of Arrow
+        jmp bot
+        
+        
+        ;====Draw Mid Part=============
+        mid:
+        mov ax,di   ;Restart row
+        mov bx,si   ;Restart Column
+        sub bx,9    ;Length of Arrow
+        drawRectangle ax,bx,1,9,color 
+        
+        
+        
+        popa
+    ENDM       drawLeftPlayerArrow
+
+drawRightPlayerArrow Macro row,column,color
+        local top,ibot,bot,mid
+        pusha
+        
+        ;=====Back up=====
+        mov di,row
+        mov si,column
+        
+        ;=====Initialization======
+        mov cx,si
+        mov dx,di
+
+        mov bl,3 ;size of head
+        mov bh,2 ;Counter, draw front and back
+        mov ah,0ch   ;draw pixel command
+        mov al,color ;set Color
+        
+        
+        
+        ;======Draw Top part=======
+        top:
+        int 10h
+        inc cx
+        dec dx
+        dec bl
+        jnz top
+        
+        ;draw the top part again, but in the back
+        mov cx,si  
+        mov dx,di
+        mov bl,3
+        dec bh
+        jz ibot
+        
+        add cx,9 ;Length of Arrow
+        jmp top
+        
+        
+        ;=====Draw Bot=========
+        ibot:
+        mov bh,2
+        bot: 
+        
+        int 10h
+        inc cx
+        inc dx
+        dec bl
+        jnz bot
+        
+        ;draw the bottom part again, but in the back
+        mov cx,si
+        mov dx,di
+        dec bh
+        jz mid
+        mov bl,3
+        add cx,9  ;Length of Arrow
+        jmp bot
+        
+        
+        ;====Draw Mid Part=============
+        mid:
+        mov ax,di   ;Restart row
+        mov bx,si   ;Restart Column
+        drawRectangle ax,bx,1,9,color 
+        
+        
+        
+        popa
+ENDM   drawRightPlayerArrow

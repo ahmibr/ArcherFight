@@ -1,0 +1,8 @@
+ clearLeftCharacter macro row,column
+    pusha
+    mov ax,row
+    mov bx,column
+    drawRectangle ax,bx,37,21,00h
+    popa
+ endm  clearLeftCharacter 
+ 

@@ -1,0 +1,24 @@
+mov cx,0FFh
+        mov dx,0FFh
+        lp:
+        drawWall wallRow,wheight,07h 
+        dec dx
+        jnz lp
+        drawWall wallRow,wheight,00h
+        cmp up,1
+        je goUp
+        goDown:
+        mov up,0 
+        cmp wallRow,150
+        jae goUp
+        inc wallRow
+        jmp reset
+        goUp:
+        mov up,1
+        cmp wallRow,130
+        jbe goDown
+        dec wallRow
+
+        reset:
+        mov dx,0FFh
+        jmp lp
