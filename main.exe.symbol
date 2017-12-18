@@ -1,0 +1,53 @@
+< THE SYMBOL TABLE >  main.exe  --  emu8086 assembler version: 4.08 
+===================================================================================================
+Name                     	Offset    	Size      	Type      	Segment   
+===================================================================================================
+STACK                    	00000     	-5        	SEGMENT   	(ITSELF)  
+DATA                     	00004     	-5        	SEGMENT   	(ITSELF)  
+ID                       	00000     	1         	VAR       	data      
+WELCOME_MESSAGE1         	00001     	1         	VAR       	data      
+WELCOME_MESSAGE2         	00019     	1         	VAR       	data      
+PROG_OP1                 	00035     	1         	VAR       	data      
+PROG_OP2                 	00051     	1         	VAR       	data      
+PROG_OP3                 	00073     	1         	VAR       	data      
+VAL                      	00093     	1         	VAR       	data      
+LINE                     	00094     	1         	VAR       	data      
+NAME1                    	000E5     	1         	VAR       	data      
+NAME2                    	000F5     	1         	VAR       	data      
+FOOTERMESSAGE1           	00105     	1         	VAR       	data      
+FOOTERMESSAGE2           	0011B     	1         	VAR       	data      
+CURSOR1ROW               	00125     	1         	VAR       	data      
+CURSOR1COLUMN            	00126     	1         	VAR       	data      
+CURSOR2ROW               	00127     	1         	VAR       	data      
+CURSOR2COLUMN            	00128     	1         	VAR       	data      
+CODE                     	00017     	-5        	SEGMENT   	(ITSELF)  
+MAIN                     	00000     	-1        	FAR       	code      
+INVALID_LOC1TMP          	0004B     	-1        	LABEL     	code      
+CHECK_UPPER_LOC2TMP      	00062     	-1        	LABEL     	code      
+CHECK_LOWER_LOC3TMP      	0006C     	-1        	LABEL     	code      
+VALID_LOC4TMP            	00072     	-1        	LABEL     	code      
+BACK_LOC5TMP             	0007E     	-1        	LABEL     	code      
+PROG_OPTIONS_LOC6TMP     	000AA     	-1        	LABEL     	code      
+PRINT_DASHES_LOC9TMP     	000FB     	-1        	LABEL     	code      
+WAIT_FOR_ENTER_LOC7TMP   	000FF     	-1        	LABEL     	code      
+END_WELCOME_SCREEN_LOC8TMP	00109     	-1        	LABEL     	code      
+READ                     	00113     	-1        	LABEL     	code      
+SENDSERIAL               	00149     	-1        	LABEL     	code      
+READSERIAL               	00150     	-1        	LABEL     	code      
+PRINT                    	00196     	-1        	LABEL     	code      
+FOO                      	001AD     	-1        	LABEL     	code      
+PORTINITIALIZE           	001BB     	-1        	NEAR      	code      
+SCREENINITIALIZATION     	001D4     	-1        	NEAR      	code      
+GETCURSORPOS             	00254     	-1        	NEAR      	code      
+SCROLL                   	0025B     	-1        	NEAR      	code      
+TRANSFERNAMES            	00268     	-1        	NEAR      	code      
+LABEL                    	00271     	-1        	LABEL     	code      
+AGAIN                    	00274     	-1        	LABEL     	code      
+CHK                      	00282     	-1        	LABEL     	code      
+TRANSFERID               	00292     	-1        	NEAR      	code      
+SENDID                   	002A3     	-1        	LABEL     	code      
+RETURN                   	002A9     	-1        	LABEL     	code      
+===================================================================================================
+[ 12/18/2017  --  3:48:16 PM ] 
+< END >
+ 

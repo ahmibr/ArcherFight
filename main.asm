@@ -1,11 +1,3 @@
-moveCursor macro row,column 
-MOV AH, 02 ; Set Cursor option
-MOV BH, 00 ; Page 0
-MOV DL, column ; Col Pos
-MOV DH, row; Row Pos
-INT 10H
-endm moveCursor     
-
         .MODEL SMALL
         .STACK 64
         .DATA 
