@@ -1,4 +1,5 @@
 include welcome.inc    
+
 moveCursor macro row,column 
 MOV AH, 02 ; Set Cursor option
 MOV BH, 00 ; Page 0
@@ -109,43 +110,52 @@ MAIN    PROC FAR
   	JZ read
 
  ;If Ready read the VALUE in Receive data register
-  	    mov dx , 03F8H
-  	    in al , dx   
-  	    
-  	    cmp al,00 ;other player pressed F3
-  	    je exitProgram
+        mov dx , 03F8H
+        in al , dx   
+        
+        cmp al,00 ;if other player pressed F3
+        je exitProgram
   	    
         moveCursor cursor2row,cursor2column 
-        mov ah,02
+        mov ah,02    ;print character
         cmp al,13    ;if user pressed Enter
         jne print    ;if he didn't, it's normal char
         
-        mov dl,10
+        mov dl,10    ;print Enter
+        int 21h      
+
+        mov dl,13    ;print Carrage Return
         int 21h
-        mov dl,13
-        int 21h
-        call getCursorPos
+
+        ;=====Resave cursor position=======
+        call getCursorPos 
         mov cursor2row,DH
         mov cursor2column,dl
         
+        ;if cursor is going out of boundaries
         cmp dh,12
         jne read
-        mov ch,01
-        dec DH
-        dec cursor2row
-        call scroll
+
+        mov ch,01 ;start row
+        dec DH  ;as dh is out of boundary
+        dec cursor2row  ;reset cursor pos
+        call scroll     ;scroll up old chat
         jmp read
-    print:
-  	    mov dl , al
+
+    print:   ;normal character
+  	mov dl , al     ;print character
         int 21h
+
+        ;=====Resave cursor position=======
         call getCursorPos
         mov cursor2row,DH
         mov cursor2column,dl
         
         cmp al,08 ;if other player pressed backspace
         jne checkBoundary
-        mov ah,02
-        mov dl,00
+
+        mov ah,02       ;print charactetr
+        mov dl,00       ;NULL (To clear cursor place)
         int 21h
         moveCursor cursor2row,cursor2column
         
@@ -159,7 +169,14 @@ MAIN    PROC FAR
         call scroll
         jmp read
         
-        exitProgram:
+        exitProgram:     
+        
+        ;Send Signal That I quit The Program
+        mov dx , 3F8H		; Transmit data register
+        mov  al,val             ;NULL VALUE MEANS I QUIT
+  	out dx , al 
+
+        ;=====Some House Keeping===========================
         mov AH, 06 ; 06-Scroll up \\ 07-Scroll down
         MOV AL, 00 ; Entire Page
         MOV BH, 07 ; Normal Attribute or Color Attributes
@@ -174,38 +191,42 @@ MAIN    PROC FAR
         MOV DL, 00 ; Col Pos
         MOV DH, 00 ; Row Pos
         INT 10H
-        
-        mov ah,4ch
-        mov al,0
+        ;======================================================
+
+        mov ah,4ch ;Exit Program
         int 21h
 MAIN    ENDP
 
 portInitialize                PROC 
-;Set Divisor Latch Access Bit
-mov dx,3fbh 			; Line Control Register
-mov al,10000000b		;Set Divisor Latch Access Bit
-out dx,al			;Out it
-;Set LSB byte of the Baud Rate Divisor Latch register.
-mov dx,3f8h			
-mov al,0ch			
-out dx,al
-;Set MSB byte of the Baud Rate Divisor Latch register.
-mov dx,3f9h
-mov al,00h
-out dx,al
-;Set port configuration
-mov dx,3fbh
-mov al,00011011b
-; 0:Access to Receiver buffer, Transmitter buffer
-; 0:Set Break disabled
-; 011:Even Parity
-; 0:One Stop Bit
-; 11:8bits
-out dx,al
-ret
+        
+        ;Set Divisor Latch Access Bit
+        mov dx,3fbh 			; Line Control Register
+        mov al,10000000b		;Set Divisor Latch Access Bit
+        out dx,al			;Out it
+        ;Set LSB byte of the Baud Rate Divisor Latch register.
+        mov dx,3f8h			
+        mov al,0ch			
+        out dx,al
+        ;Set MSB byte of the Baud Rate Divisor Latch register.
+        mov dx,3f9h
+        mov al,00h
+        out dx,al
+        ;Set port configuration
+        mov dx,3fbh
+        mov al,00011011b
+        ; 0:Access to Receiver buffer, Transmitter buffer
+        ; 0:Set Break disabled
+        ; 011:Even Parity
+        ; 0:One Stop Bit
+        ; 11:8bits
+        out dx,al
+        ret
 portInitialize                ENDP
 
 screenInitialization                PROC 
+        
+
+        ;==========CLear Screen==========================
         mov AH, 06 ; 06-Scroll up \\ 07-Scroll down
         MOV AL, 00 ; Entire Page
         MOV BH, 07 ; Normal Attribute or Color Attributes
@@ -220,7 +241,9 @@ screenInitialization                PROC
         MOV DL, 00 ; Col Pos
         MOV DH, 00 ; Row Pos
         INT 10H
-        
+        ;===============================================
+
+        ;======Print Informations=======================
         mov ah,09
         mov dx,offset name2
         int 21H
@@ -283,84 +306,64 @@ screenInitialization                PROC
         mov dl,':'
         int 21H
         
-        
         ret
 screenInitialization                ENDP
 
 getCursorPos PROC
-MOV AH, 03 ; DH: Row, DL: Col , CX : Shape of Cursor
-MOV BH, 00 ; Page 0 (Currently Viewed Page)
-INT 10H
-ret
+        
+        MOV AH, 03 ; DH: Row, DL: Col , CX : Shape of Cursor
+        MOV BH, 00 ; Page 0 (Currently Viewed Page)
+        INT 10H
+        ret
 getCursorPos ENDP
 
 scroll PROC
-MOV AH, 06 ; 06-Scroll up \\ 07-Scroll down
-MOV AL, 01 ; Entire Page
-MOV BH, 07 ; Normal Attribute or Color Attributes
-MOV Cl, 00 ; Starting Col
-MOV DL, 79 ; End Col
-INT 10H
-ret
+        pusha
+        MOV AH, 06 ; 06-Scroll up \\ 07-Scroll down
+        MOV AL, 01 ; Entire Page
+        MOV BH, 07 ; Normal Attribute or Color Attributes
+        MOV Cl, 00 ; Starting Col
+        MOV DL, 79 ; End Col
+        INT 10H
+        popa
+        ret
 scroll ENDP
 
 transferNames proc
     
+        pusha
+        mov cx,15    
+        LEA bx,name1
+        LEA si,name2  
 
-mov cx,15    
-LEA bx,name1
-LEA si,name2  
-
-label:
-;Check that Transmitter Holding Register is Empty
-		mov dx , 3FDH		; Line Status Register
-AGAIN:  	
+sendCharacterOfName:
+        ;Check that Transmitter Holding Register is Empty
+        mov dx , 3FDH		; Line Status Register
+        WaitUntillSendName:  	
         In al , dx 			;Read Line Status
-  		AND al , 00100000b
-  		JZ AGAIN
+        AND al , 00100000b
+        JZ WaitUntillSendName
 
-;If empty put the VALUE in Transmit data register
-  		mov dx , 3F8H		; Transmit data register
-  		mov  al,[bx]
-  		out dx , al 
-            
-            ;Check that Data Ready
-		mov dx , 3FDH		; Line Status Register
-	CHK:	
-	    in al , dx 
-  		AND al , 1
-  		JZ CHK
+        ;If empty put the VALUE in Transmit data register
+        mov dx , 3F8H		; Transmit data register
+        mov  al,[bx]
+        out dx , al 
+        
+        ;Check that Data Ready
+        mov dx , 3FDH		; Line Status Register
+        WaitUntillRecieveName:	
+        in al , dx 
+        AND al , 1
+        JZ WaitUntillRecieveName
 
- ;If Ready read the VALUE in Receive data register
-  		mov dx , 03F8H
-  		in al , dx 
-  		mov [si] , al
+        ;If Ready read the VALUE in Receive data register
+        mov dx , 03F8H
+        in al , dx 
+        mov [si] , al
         inc si
         inc bx
-        loop label
-
-      
+        loop sendCharacterOfName
+        popa
    ret   
 transferNames   endp           
-
-transferID proc
- ;Check that Data Ready
-		mov dx , 3FDH		; Line Status Register
-        in al , dx 
-  		AND al , 1
-  		JNZ sendID
-
- ;If Ready read the VALUE in Receive data register
-  		mov dx , 03F8H
-  		in al , dx 
-  		mov id , al
-        jmp return
-        sendID:
-        mov dx , 3F8H		; Transmit data register
-  		mov  al,2
-  		out dx , al 
-        return:
-        
-        ret   
-transferID   endp
         END MAIN         

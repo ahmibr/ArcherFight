@@ -1,0 +1,469 @@
+EMU8086 GENERATED LISTING. MACHINE CODE <- SOURCE.
+ 
+fChat.exe -- emu8086 assembler version: 4.08  
+ 
+[ 12/19/2017  --  1:18:00 AM ] 
+ 
+===================================================================================================
+[LINE]     LOC: MACHINE CODE                          SOURCE
+===================================================================================================
+ 
+[   1]        :                                       include welcome.inc
+[   2]        :                                       
+[   3]        :                                       moveCursor macro row,column
+[   4]        :                                       MOV AH, 02 ; Set Cursor option
+[   5]        :                                       MOV BH, 00 ; Page 0
+[   6]        :                                       MOV DL, column ; Col Pos
+[   7]        :                                       MOV DH, row; Row Pos
+[   8]        :                                       INT 10H
+[   9]        :                                       endm moveCursor
+[  10]        :                                       
+[  11]        :                                       
+[  12]        :                                       .MODEL SMALL
+[  13]        :                                       .STACK 64
+[  14]        :                                       .DATA
+[  15]        :                                       ;====================Data====================
+[  16]    0040: 01                                    id db 1
+[  17]    0041: 50 6C 65 61 73 65 20 65 6E 74 65 72   welcome_message1    db 'Please enter your name:$'
+                20 79 6F 75 72 20 6E 61 6D 65 3A 24 
+                                                    
+[  18]    0059: 50 72 65 73 73 20 45 6E 74 65 72 20   welcome_message2    db 'Press Enter key to continue$'
+                6B 65 79 20 74 6F 20 63 6F 6E 74 69 
+                6E 75 65 24                         
+[  19]    0075: 2A 54 6F 20 73 74 61 72 74 20 63 68   prog_op1	db '*To start chatting press F1$'
+                61 74 74 69 6E 67 20 70 72 65 73 73 
+                20 46 31 24                         
+[  20]    0091: 2A 54 6F 20 73 74 61 72 74 20 41 72   prog_op2	db '*To start Archer game press Enter$'
+                63 68 65 72 20 67 61 6D 65 20 70 72 
+                65 73 73 20 45 6E 74 65 72 24       
+[  21]    00B3: 2A 54 6F 20 73 74 61 72 74 20 74 68   prog_op3	db '*To start the program press ESC$'
+                65 20 70 72 6F 67 72 61 6D 20 70 72 
+                65 73 73 20 45 53 43 24             
+[  22]        :                                       
+[  23]    00D3: 00                                    val db ?
+[  24]    00D4: 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D   line db 80 dup('-'),'$'
+                2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 
+                2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 
+                2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 
+                2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 
+                2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 
+                2D 2D 2D 2D 2D 2D 2D 2D 24          
+[  25]    0125: 24 24 24 24 24 24 24 24 24 24 24 24   name1 db 16 dup('$')
+                24 24 24 24                         
+[  26]    0135: 24 24 24 24 24 24 24 24 24 24 24 24   name2 db 16 dup('$')
+                24 24 24 24                         
+[  27]    0145: 54 6F 20 65 6E 64 20 63 68 61 74 74   footerMessage1 db "To end chatting with ",'$'
+                69 6E 67 20 77 69 74 68 20 24       
+[  28]    015B: 20 50 72 65 73 73 20 46 33 24         footerMessage2 db " Press F3",'$'
+[  29]    0165: 0E                                    cursor1row db 14
+[  30]    0166: 00                                    cursor1column db 00
+[  31]    0167: 01                                    cursor2row db 01
+[  32]    0168: 00                                    cursor2column db 00
+[  33]        :                                       ;============================================
+[  34]        :                                       
+[  35]        :                                       .code
+[  36]    0170:                                       MAIN    PROC FAR
+[  37]    0170: B8 04 00                              MOV AX,@DATA
+[  38]    0173: 8E D8                                 MOV DS,AX
+[  39]        :                                       
+[  40]    0175: 60 B8 00 06 B7 07 B9 00 00 BA 4F 18   welcomeScreen name1
+                CD 10 B8 00 00 BB 00 00 B9 00 00 BA 
+                00 00 B4 02 B6 0B B2 1B CD 10 B4 09 
+                BA 01 00 CD 21 B4 02 B6 0E B2 19 CD 
+                10 B4 09 BA 19 00 CD 21 B4 02 B6 0C 
+                B2 1F CD 10 BE E5 00 B9 0F 00 B4 07 
+                CD 21 3C 08 74 2B 3C 0D 74 53 83 F9 
+                00 74 EF 3C 41 73 02 EB E9 3C 5A 76 
+                0C 3C 61 73 02 EB DF 3C 7A 76 02 EB 
+                D9 88 04 46 B4 02 8A D0 CD 21 49 EB 
+                CD 83 F9 0F 74 C8 41 51 B4 03 B7 00 
+                CD 10 FE CA B4 02 CD 10 B4 02 B2 00 
+                CD 21 B4 03 B7 00 CD 10 FE CA B4 02 
+                CD 10 4E C6 04 24 59 EB A1 83 F9 0F 
+                74 9C B8 00 06 B7 07 B9 00 00 BA 4F 
+                18 CD 10 BB 00 00 B4 02 B6 0A B2 18 
+                CD 10 B4 09 BA 35 00 CD 21 B4 02 B6 
+                0C B2 18 CD 10 B4 09 BA 51 00 CD 21 
+                B4 02 B6 0E B2 18 CD 10 B4 09 BA 73 
+                00 CD 21 B4 02 B6 16 B2 00 CD 10 B9 
+                50 00 B4 02 B2 2D CD 21 E2 FC B4 07 
+                CD 21 3C 0D 74 02 EB F6 61          
+[  41]    027A: E8 3C 01                              call portInitialize
+[  42]    027D: E8 E8 01                              call transferNames
+[  43]    0280: E8 4F 01                              call screenInitialization
+[  44]        :                                       
+[  45]    0283:                                       read:
+[  46]    0283: B4 02 B7 00 8A 16 26 01 8A 36 25 01   moveCursor cursor1row,cursor1column
+                CD 10                               
+[  47]    0291: B4 01                                 mov AH, 01 ; ZF =0 if key pressed, else ZF=1 AL: ASCII Code, AH: Scancode
+[  48]    0293: CD 16                                 int 16H
+[  49]    0295: 74 6D                                 jz readSerial
+[  50]        :                                       
+[  51]    0297: B4 00                                 mov AH, 00 ; AL: ASCII Code, AH: Scancode
+[  52]    0299: CD 16                                 int 16H
+[  53]    029B: A2 93 00                              mov val,al
+[  54]        :                                       
+[  55]    029E: 80 FC 3D                              cmp ah,61 ;if user pressed F3
+[  56]    02A1: 75 03 E9 EE 00                        je exitProgram
+[  57]        :                                       
+[  58]    02A6: 3C 00                                 cmp al,00 ;any other key produces NULL
+[  59]    02A8: 74 5A                                 je readSerial
+[  60]        :                                       
+[  61]    02AA: 3C 0D                                 cmp al,13 ;if pressed enter
+[  62]    02AC: 75 06                                 jne printNormal
+[  63]        :                                       
+[  64]    02AE: B4 02                                 mov ah,02
+[  65]    02B0: B2 0A                                 mov dl,10
+[  66]    02B2: CD 21                                 int 21h
+[  67]        :                                       
+[  68]    02B4:                                       printNormal:
+[  69]    02B4: B4 02                                 mov ah,02
+[  70]    02B6: 8A 16 93 00                           mov dl,val
+[  71]    02BA: CD 21                                 int 21h
+[  72]        :                                       
+[  73]    02BC: E8 93 01                              call getCursorPos
+[  74]    02BF: 88 36 25 01                           mov cursor1row,DH
+[  75]    02C3: 88 16 26 01                           mov cursor1column,dl
+[  76]        :                                       
+[  77]    02C7: A0 93 00                              mov al,val
+[  78]    02CA: 3C 08                                 cmp al,08     ;if user pressed backspace
+[  79]    02CC: 75 14                                 jne fixCursor
+[  80]        :                                       
+[  81]    02CE: B4 02                                 mov ah,02
+[  82]    02D0: B2 00                                 mov dl,00
+[  83]    02D2: CD 21                                 int 21h
+[  84]        :                                       
+[  85]    02D4: B4 02 B7 00 8A 16 26 01 8A 36 25 01   moveCursor cursor1row,cursor1column
+                CD 10                               
+[  86]        :                                       
+[  87]    02E2:                                       fixCursor:
+[  88]    02E2: E8 6D 01                              call getCursorPos
+[  89]    02E5: 88 36 25 01                           mov cursor1row,DH
+[  90]    02E9: 88 16 26 01                           mov cursor1column,dl
+[  91]        :                                       
+[  92]    02ED: 80 FE 17                              cmp dh,23
+[  93]    02F0: 75 0B                                 jne sendSerial
+[  94]    02F2: FE CE                                 dec DH
+[  95]    02F4: FE 0E 25 01                           dec cursor1row
+[  96]    02F8: B5 0E                                 mov ch,14
+[  97]    02FA: E8 5C 01                              call scroll
+[  98]    02FD:                                       sendSerial:
+[  99]        :                                       
+[ 100]        :                                       
+[ 101]        :                                       ;If empty put the VALUE in Transmit data register
+[ 102]    02FD: BA F8 03                              	mov dx , 3F8H		; Transmit data register
+[ 103]    0300: A0 93 00                              	mov  al,val
+[ 104]    0303: EE                                    	out dx , al
+[ 105]        :                                       
+[ 106]    0304:                                       readSerial:
+[ 107]    0304: BA FD 03                              mov dx , 3FDH		; Line Status Register
+[ 108]    0307: EC                                    	in al , dx
+[ 109]    0308: 24 01                                 	AND al , 1
+[ 110]    030A: 75 03 E9 74 FF                        	JZ read
+[ 111]        :                                       
+[ 112]        :                                       ;If Ready read the VALUE in Receive data register
+[ 113]    030F: BA F8 03                              mov dx , 03F8H
+[ 114]    0312: EC                                    in al , dx
+[ 115]        :                                       
+[ 116]    0313: 3C 00                                 cmp al,00 ;if other player pressed F3
+[ 117]    0315: 74 7D                                 je exitProgram
+[ 118]        :                                       	
+[ 119]    0317: B4 02 B7 00 8A 16 28 01 8A 36 27 01   moveCursor cursor2row,cursor2column
+                CD 10                               
+[ 120]    0325: B4 02                                 mov ah,02    ;print character
+[ 121]    0327: 3C 0D                                 cmp al,13    ;if user pressed Enter
+[ 122]    0329: 75 29                                 jne print    ;if he didn't, it's normal char
+[ 123]        :                                       
+[ 124]    032B: B2 0A                                 mov dl,10    ;print Enter
+[ 125]    032D: CD 21                                 int 21h
+[ 126]        :                                       
+[ 127]    032F: B2 0D                                 mov dl,13    ;print Carrage Return
+[ 128]    0331: CD 21                                 int 21h
+[ 129]        :                                       
+[ 130]        :                                       ;=====Resave cursor position=======
+[ 131]    0333: E8 1C 01                              call getCursorPos
+[ 132]    0336: 88 36 27 01                           mov cursor2row,DH
+[ 133]    033A: 88 16 28 01                           mov cursor2column,dl
+[ 134]        :                                       
+[ 135]        :                                       ;if cursor is going out of boundaries
+[ 136]    033E: 80 FE 0C                              cmp dh,12
+[ 137]    0341: 74 03 E9 3D FF                        jne read
+[ 138]        :                                       
+[ 139]    0346: B5 01                                 mov ch,01 ;start row
+[ 140]    0348: FE CE                                 dec DH  ;as dh is out of boundary
+[ 141]    034A: FE 0E 27 01                           dec cursor2row  ;reset cursor pos
+[ 142]    034E: E8 08 01                              call scroll     ;scroll up old chat
+[ 143]    0351: E9 2F FF                              jmp read
+[ 144]        :                                       
+[ 145]    0354:                                       print:   ;normal character
+[ 146]    0354: 8A D0                                 	mov dl , al     ;print character
+[ 147]    0356: CD 21                                 int 21h
+[ 148]        :                                       
+[ 149]        :                                       ;=====Resave cursor position=======
+[ 150]    0358: E8 F7 00                              call getCursorPos
+[ 151]    035B: 88 36 27 01                           mov cursor2row,DH
+[ 152]    035F: 88 16 28 01                           mov cursor2column,dl
+[ 153]        :                                       
+[ 154]    0363: 3C 08                                 cmp al,08 ;if other player pressed backspace
+[ 155]    0365: 75 14                                 jne checkBoundary
+[ 156]        :                                       
+[ 157]    0367: B4 02                                 mov ah,02       ;print charactetr
+[ 158]    0369: B2 00                                 mov dl,00       ;NULL (To clear cursor place)
+[ 159]    036B: CD 21                                 int 21h
+[ 160]    036D: B4 02 B7 00 8A 16 28 01 8A 36 27 01   moveCursor cursor2row,cursor2column
+                CD 10                               
+[ 161]        :                                       
+[ 162]    037B:                                       checkBoundary:
+[ 163]    037B: E8 D4 00                              call getCursorPos
+[ 164]    037E: 80 FE 0C                              cmp dh,12
+[ 165]    0381: 74 03 E9 FD FE                        jnz read
+[ 166]    0386: FE CE                                 dec dh
+[ 167]    0388: FE 0E 27 01                           dec cursor2row
+[ 168]    038C: B5 01                                 mov ch,01
+[ 169]    038E: E8 C8 00                              call scroll
+[ 170]    0391: E9 EF FE                              jmp read
+[ 171]        :                                       
+[ 172]    0394:                                       exitProgram:
+[ 173]        :                                       
+[ 174]        :                                       ;Send Signal That I quit The Program
+[ 175]    0394: BA F8 03                              mov dx , 3F8H		; Transmit data register
+[ 176]    0397: A0 93 00                              mov  al,val             ;NULL VALUE MEANS I QUIT
+[ 177]    039A: EE                                    	out dx , al
+[ 178]        :                                       
+[ 179]        :                                       ;=====Some House Keeping===========================
+[ 180]    039B: B4 06                                 mov AH, 06 ; 06-Scroll up \\ 07-Scroll down
+[ 181]    039D: B0 00                                 MOV AL, 00 ; Entire Page
+[ 182]    039F: B7 07                                 MOV BH, 07 ; Normal Attribute or Color Attributes
+[ 183]    03A1: B5 00                                 MOV CH, 00 ; Starting Row
+[ 184]    03A3: B1 00                                 MOV Cl, 00 ; Starting Col
+[ 185]    03A5: B6 18                                 MOV DH, 24 ; End Row
+[ 186]    03A7: B2 4F                                 MOV DL, 79 ; End Col
+[ 187]    03A9: CD 10                                 INT 10H
+[ 188]        :                                       
+[ 189]    03AB: B4 02                                 MOV AH, 02 ; Set Cursor option
+[ 190]    03AD: B7 00                                 MOV BH, 00 ; Page 0
+[ 191]    03AF: B2 00                                 MOV DL, 00 ; Col Pos
+[ 192]    03B1: B6 00                                 MOV DH, 00 ; Row Pos
+[ 193]    03B3: CD 10                                 INT 10H
+[ 194]        :                                       ;======================================================
+[ 195]        :                                       
+[ 196]    03B5: B4 4C                                 mov ah,4ch ;Exit Program
+[ 197]    03B7: CD 21                                 int 21h
+[ 198]        :                                       MAIN    ENDP
+[ 199]        :                                       
+[ 200]    03B9:                                       portInitialize                PROC
+[ 201]        :                                       
+[ 202]        :                                       ;Set Divisor Latch Access Bit
+[ 203]    03B9: BA FB 03                              mov dx,3fbh 			; Line Control Register
+[ 204]    03BC: B0 80                                 mov al,10000000b		;Set Divisor Latch Access Bit
+[ 205]    03BE: EE                                    out dx,al			;Out it
+[ 206]        :                                       ;Set LSB byte of the Baud Rate Divisor Latch register.
+[ 207]    03BF: BA F8 03                              mov dx,3f8h			
+[ 208]    03C2: B0 0C                                 mov al,0ch			
+[ 209]    03C4: EE                                    out dx,al
+[ 210]        :                                       ;Set MSB byte of the Baud Rate Divisor Latch register.
+[ 211]    03C5: BA F9 03                              mov dx,3f9h
+[ 212]    03C8: B0 00                                 mov al,00h
+[ 213]    03CA: EE                                    out dx,al
+[ 214]        :                                       ;Set port configuration
+[ 215]    03CB: BA FB 03                              mov dx,3fbh
+[ 216]    03CE: B0 1B                                 mov al,00011011b
+[ 217]        :                                       ; 0:Access to Receiver buffer, Transmitter buffer
+[ 218]        :                                       ; 0:Set Break disabled
+[ 219]        :                                       ; 011:Even Parity
+[ 220]        :                                       ; 0:One Stop Bit
+[ 221]        :                                       ; 11:8bits
+[ 222]    03D0: EE                                    out dx,al
+[ 223]    03D1: C3                                    ret
+[ 224]        :                                       portInitialize                ENDP
+[ 225]        :                                       
+[ 226]    03D2:                                       screenInitialization                PROC
+[ 227]        :                                       
+[ 228]        :                                       
+[ 229]        :                                       ;==========CLear Screen==========================
+[ 230]    03D2: B4 06                                 mov AH, 06 ; 06-Scroll up \\ 07-Scroll down
+[ 231]    03D4: B0 00                                 MOV AL, 00 ; Entire Page
+[ 232]    03D6: B7 07                                 MOV BH, 07 ; Normal Attribute or Color Attributes
+[ 233]    03D8: B5 00                                 MOV CH, 00 ; Starting Row
+[ 234]    03DA: B1 00                                 MOV Cl, 00 ; Starting Col
+[ 235]    03DC: B6 18                                 MOV DH, 24 ; End Row
+[ 236]    03DE: B2 4F                                 MOV DL, 79 ; End Col
+[ 237]    03E0: CD 10                                 INT 10H
+[ 238]        :                                       
+[ 239]    03E2: B4 02                                 MOV AH, 02 ; Set Cursor option
+[ 240]    03E4: B7 00                                 MOV BH, 00 ; Page 0
+[ 241]    03E6: B2 00                                 MOV DL, 00 ; Col Pos
+[ 242]    03E8: B6 00                                 MOV DH, 00 ; Row Pos
+[ 243]    03EA: CD 10                                 INT 10H
+[ 244]        :                                       ;===============================================
+[ 245]        :                                       
+[ 246]        :                                       ;======Print Informations=======================
+[ 247]    03EC: B4 09                                 mov ah,09
+[ 248]    03EE: BA F5 00                              mov dx,offset name2
+[ 249]    03F1: CD 21                                 int 21H
+[ 250]        :                                       
+[ 251]    03F3: B4 02                                 mov ah,02
+[ 252]    03F5: B2 3A                                 mov dl,':'
+[ 253]    03F7: CD 21                                 int 21H
+[ 254]        :                                       
+[ 255]    03F9: B4 02                                 MOV AH, 02 ; Set Cursor option
+[ 256]    03FB: B7 00                                 MOV BH, 00 ; Page 0
+[ 257]    03FD: B2 00                                 MOV DL, 0 ; Col Pos
+[ 258]    03FF: B6 0C                                 MOV DH, 12 ; Row Pos
+[ 259]    0401: CD 10                                 INT 10H
+[ 260]        :                                       
+[ 261]    0403: B4 09                                 mov ah,09
+[ 262]    0405: BA 94 00                              mov dx,offset line
+[ 263]    0408: CD 21                                 int 21H
+[ 264]        :                                       
+[ 265]    040A: B4 02                                 MOV AH, 02 ; Set Cursor option
+[ 266]    040C: B7 00                                 MOV BH, 00 ; Page 0
+[ 267]    040E: B2 00                                 MOV DL, 0 ; Col Pos
+[ 268]    0410: B6 17                                 MOV DH, 23 ; Row Pos
+[ 269]    0412: CD 10                                 INT 10H
+[ 270]        :                                       
+[ 271]    0414: B4 09                                 mov ah,09
+[ 272]    0416: BA 94 00                              mov dx,offset line
+[ 273]    0419: CD 21                                 int 21H
+[ 274]        :                                       
+[ 275]    041B: B4 02                                 MOV AH, 02 ; Set Cursor option
+[ 276]    041D: B7 00                                 MOV BH, 00 ; Page 0
+[ 277]    041F: B2 00                                 MOV DL, 0 ; Col Pos
+[ 278]    0421: B6 18                                 MOV DH, 24 ; Row Pos
+[ 279]    0423: CD 10                                 INT 10H
+[ 280]        :                                       
+[ 281]    0425: B4 09                                 mov ah,09
+[ 282]    0427: BA 05 01                              mov dx,offset footerMessage1
+[ 283]    042A: CD 21                                 int 21H
+[ 284]        :                                       
+[ 285]        :                                       
+[ 286]    042C: B4 09                                 mov ah,09
+[ 287]    042E: BA F5 00                              mov dx,offset name2
+[ 288]    0431: CD 21                                 int 21H
+[ 289]        :                                       
+[ 290]    0433: B4 09                                 mov ah,09
+[ 291]    0435: BA 1B 01                              mov dx,offset footerMessage2
+[ 292]    0438: CD 21                                 int 21H
+[ 293]        :                                       
+[ 294]        :                                       
+[ 295]    043A: B4 02                                 MOV AH, 02 ; Set Cursor option
+[ 296]    043C: B7 00                                 MOV BH, 00 ; Page 0
+[ 297]    043E: B2 00                                 MOV DL, 0 ; Col Pos
+[ 298]    0440: B6 0D                                 MOV DH, 13 ; Row Pos
+[ 299]    0442: CD 10                                 INT 10H
+[ 300]        :                                       
+[ 301]    0444: B4 09                                 mov ah,09
+[ 302]    0446: BA E5 00                              mov dx,offset name1
+[ 303]    0449: CD 21                                 int 21H
+[ 304]        :                                       
+[ 305]    044B: B4 02                                 mov ah,02
+[ 306]    044D: B2 3A                                 mov dl,':'
+[ 307]    044F: CD 21                                 int 21H
+[ 308]        :                                       
+[ 309]    0451: C3                                    ret
+[ 310]        :                                       screenInitialization                ENDP
+[ 311]        :                                       
+[ 312]    0452:                                       getCursorPos PROC
+[ 313]        :                                       
+[ 314]    0452: B4 03                                 MOV AH, 03 ; DH: Row, DL: Col , CX : Shape of Cursor
+[ 315]    0454: B7 00                                 MOV BH, 00 ; Page 0 (Currently Viewed Page)
+[ 316]    0456: CD 10                                 INT 10H
+[ 317]    0458: C3                                    ret
+[ 318]        :                                       getCursorPos ENDP
+[ 319]        :                                       
+[ 320]    0459:                                       scroll PROC
+[ 321]    0459: 60                                    pusha
+[ 322]    045A: B4 06                                 MOV AH, 06 ; 06-Scroll up \\ 07-Scroll down
+[ 323]    045C: B0 01                                 MOV AL, 01 ; Entire Page
+[ 324]    045E: B7 07                                 MOV BH, 07 ; Normal Attribute or Color Attributes
+[ 325]    0460: B1 00                                 MOV Cl, 00 ; Starting Col
+[ 326]    0462: B2 4F                                 MOV DL, 79 ; End Col
+[ 327]    0464: CD 10                                 INT 10H
+[ 328]    0466: 61                                    popa
+[ 329]    0467: C3                                    ret
+[ 330]        :                                       scroll ENDP
+[ 331]        :                                       
+[ 332]    0468:                                       transferNames proc
+[ 333]        :                                       
+[ 334]    0468: 60                                    pusha
+[ 335]    0469: B9 0F 00                              mov cx,15
+[ 336]    046C: BB E5 00                              LEA bx,name1
+[ 337]    046F: BE F5 00                              LEA si,name2
+[ 338]        :                                       
+[ 339]    0472:                                       sendCharacterOfName:
+[ 340]        :                                       ;Check that Transmitter Holding Register is Empty
+[ 341]    0472: BA FD 03                              mov dx , 3FDH		; Line Status Register
+[ 342]    0475:                                       WaitUntillSendName:  	
+[ 343]    0475: EC                                    In al , dx 			;Read Line Status
+[ 344]    0476: 24 20                                 AND al , 00100000b
+[ 345]    0478: 74 FB                                 JZ WaitUntillSendName
+[ 346]        :                                       
+[ 347]        :                                       ;If empty put the VALUE in Transmit data register
+[ 348]    047A: BA F8 03                              mov dx , 3F8H		; Transmit data register
+[ 349]    047D: 8A 07                                 mov  al,[bx]
+[ 350]    047F: EE                                    out dx , al
+[ 351]        :                                       
+[ 352]        :                                       ;Check that Data Ready
+[ 353]    0480: BA FD 03                              mov dx , 3FDH		; Line Status Register
+[ 354]    0483:                                       WaitUntillRecieveName:	
+[ 355]    0483: EC                                    in al , dx
+[ 356]    0484: 24 01                                 AND al , 1
+[ 357]    0486: 74 FB                                 JZ WaitUntillRecieveName
+[ 358]        :                                       
+[ 359]        :                                       ;If Ready read the VALUE in Receive data register
+[ 360]    0488: BA F8 03                              mov dx , 03F8H
+[ 361]    048B: EC                                    in al , dx
+[ 362]    048C: 88 04                                 mov [si] , al
+[ 363]    048E: 46                                    inc si
+[ 364]    048F: 43                                    inc bx
+[ 365]    0490: E2 E0                                 loop sendCharacterOfName
+[ 366]    0492: 61                                    popa
+[ 367]    0493: C3                                    ret
+[ 368]        :                                       transferNames   endp
+[ 369]        :                                       END MAIN
+[ 370]        :                                       
+ 
+===================================================================================================
+ 
+EXE HEADER - bytes from 0000 to 01FF inclusive.
+
+0000: 4D      -   exe signature (M)
+0001: 5A      -   exe signature (Z)
+0002: 94      -   bytes on last page (l.byte)
+0003: 00      -   bytes on last page (h.byte)
+0004: 04      -   512 byte pages in file (l.byte)
+0005: 00      -   512 byte pages in file (h.byte)
+0006: 01      -   relocations (l.byte)
+0007: 00      -   relocations (h.byte)
+0008: 20      -   paragraphs in header (l.byte)
+0009: 00      -   paragraphs in header (h.byte)
+000A: 00      -   minimum memory (l.byte)
+000B: 00      -   minimum memory (h.byte)
+000C: FF      -   maximum memory (l.byte)
+000D: FF      -   maximum memory (h.byte)
+000E: 00      -   SS - stack segment (l.byte)
+000F: 00      -   SS - stack segment (h.byte)
+0010: 40      -   SP - stack pointer (l.byte)
+0011: 00      -   SP - stack pointer (h.byte)
+0012: 97      -   check sum (l.byte)
+0013: 1B      -   check sum (h.byte)
+0014: 00      -   IP - instruction pointer (l.byte)
+0015: 00      -   IP - instruction pointer (h.byte)
+0016: 17      -   CS - code segment (l.byte)
+0017: 00      -   CS - code segment (h.byte)
+0018: 1E      -   relocation table adress (l.byte)
+0019: 00      -   relocation table adress (h.byte)
+001A: 00      -   overlay number (l.byte)
+001B: 00      -   overlay number (h.byte)
+001C: 01      -   signature (l.byte)
+001D: 00      -   signature (h.byte)
+001E: 01      -   relocation table - offset inside segment (l.byte)
+001F: 00      -   relocation table - offset inside segment (h.byte)
+0020: 17      -   relocation table - segment anchor (l.byte)
+0021: 00      -   relocation table - segment anchor (h.byte)
+0022 to 01FF  -   reserved relocation area  (00) 
+
+
+
+
+===================================================================================================
